@@ -6,8 +6,8 @@ import { translations } from '../translations';
 interface Props { lang: 'zh' | 'en'; }
 
 const ImageLab: React.FC<Props> = ({ lang }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [editedImage, setEditedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+  const [editedImage, setEditedImage] = useState<string | undefined>(undefined);
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +19,7 @@ const ImageLab: React.FC<Props> = ({ lang }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result as string);
-        setEditedImage(null);
+        setEditedImage(undefined);
       };
       reader.readAsDataURL(file);
     }
@@ -33,7 +33,7 @@ const ImageLab: React.FC<Props> = ({ lang }) => {
     try {
       const base64Data = selectedImage.split(',')[1];
       const mimeType = selectedImage.split(';')[0].split(':')[1];
-      const result = await editPetImage(base64Data, mimeType, finalPrompt, lang);
+      const result = await editPetImage(base64Data, mimeType, finalPrompt);
       setEditedImage(result);
     } catch (error) {
       console.error(error);
@@ -43,8 +43,8 @@ const ImageLab: React.FC<Props> = ({ lang }) => {
   };
 
   const handleReset = () => {
-    setSelectedImage(null);
-    setEditedImage(null);
+    setSelectedImage(undefined);
+    setEditedImage(undefined);
     setPrompt('');
   };
 
@@ -101,7 +101,7 @@ const ImageLab: React.FC<Props> = ({ lang }) => {
             <button 
               onClick={() => handleEdit()}
               disabled={loading || !selectedImage || !prompt}
-              className="w-full py-4 md:py-6 bg-forest text-white rounded-full text-[10px] md:text-[11px] tracking-[0.3em] uppercase font-bold shadow-xl transition-all disabled:opacity-20 active:scale-95"
+              className="w-full py-4 md:py-6 bg-brand-green text-white rounded-full text-[10px] md:text-[11px] tracking-[0.3em] uppercase font-bold shadow-xl transition-all disabled:opacity-20 active:scale-95"
             >
               {t.btnCreate}
             </button>
