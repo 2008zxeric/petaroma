@@ -2,13 +2,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
 /**
- * 初始化 AI 实例的工厂函数
- * 确保每次调用都获取最新的环境变量
+ * 声明全局变量以绕过 TS 检查
  */
+declare const process: {
+  env: {
+    API_KEY: string;
+  };
+};
+
 const getAIInstance = () => {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
-    console.error("Critical Error: API_KEY is missing in environment variables.");
+    console.error("Critical Error: API_KEY is missing.");
   }
   return new GoogleGenAI({ apiKey: apiKey || "" });
 };
@@ -55,11 +60,11 @@ export const getPetScentAdvice = async (petType: string, behavior: string, lang:
     return JSON.parse(response.text || '{}');
   } catch (e) {
     console.error("AI Diagnosis Error:", e);
-    throw new Error("Diagnosis failed. Please check your API Key and Network.");
+    throw new Error("Diagnosis failed. Please check your API Key.");
   }
 };
 
-export const editPetImage = async (base64Image: string, mimeType: string, prompt: string, lang: 'zh' | 'en' = 'zh') => {
+export const editPetImage = async (base64Image: string, mimeType: string, prompt: string) => {
   const ai = getAIInstance();
   
   try {
@@ -74,9 +79,12 @@ export const editPetImage = async (base64Image: string, mimeType: string, prompt
       },
     });
 
-    for (const part of response.candidates[0].content.parts) {
-      if (part.inlineData) {
-        return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+    const candidate = response.candidates?.[0];
+    if (candidate?.content?.parts) {
+      for (const part of candidate.content.parts) {
+        if (part.inlineData) {
+          return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+        }
       }
     }
     throw new Error("No image data returned from AI.");
