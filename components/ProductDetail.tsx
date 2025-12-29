@@ -13,11 +13,17 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   const product = (t.items as any)[productId];
   const [activeTab, setActiveTab] = useState<'story' | 'science' | 'guide'>('story');
   
-  // 图片资产
+  // ==========================================
+  // 【已更换为本地二维码引用】
+  // ==========================================
+  // 确保您的图片已上传至 GitHub 的 public/ 文件夹，且文件名与下方一致
+  // 如果您的文件名是 my-qr.jpg，请修改为 "/my-qr.jpg"
+  const qrImage = "/qr-code.png"; 
+  // ==========================================
+
   const heroImage = "https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&q=85&w=2400";
   const bottleImage = "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=600";
   const boxImage = "https://images.unsplash.com/photo-1589365278144-c9e705f843ba?auto=format&fit=crop&q=80&w=600";
-  const qrImage = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://www.xiaohongshu.com";
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -28,7 +34,7 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   return (
     <div className="fixed inset-0 z-[80] bg-[#FDFBF7] overflow-y-auto animate-fade-in font-serif-brand text-ink selection:bg-brand-green/10 pb-32">
       
-      {/* 1. 顶部导航 - 更加紧凑 */}
+      {/* 1. 顶部导航 */}
       <header className="sticky top-0 z-[110] bg-white/95 backdrop-blur-xl border-b border-brand-green/5 px-4 md:px-12 py-3 md:py-5 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-2 md:gap-4">
           <Logo imgClassName="w-8 h-8 md:w-10 md:h-10" align="left" />
@@ -41,7 +47,7 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
         </button>
       </header>
 
-      {/* 2. Compact Hero Section */}
+      {/* 2. Hero Section */}
       <section className="relative px-2 md:px-8 py-2 md:py-4">
         <div className="relative aspect-[4/3] md:aspect-[21/9] w-full rounded-[2.5rem] md:rounded-[5rem] overflow-hidden shadow-xl">
           <img src={heroImage} className="w-full h-full object-cover" alt="Hero Vibe" />
@@ -62,7 +68,7 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
         </div>
       </section>
 
-      {/* 3. 移动端 Tab 导航 (核心优化) */}
+      {/* 3. Tab Navigation */}
       <div className="sticky top-[52px] md:top-[80px] z-[100] bg-[#FDFBF7]/90 backdrop-blur-md border-b border-brand-green/5">
         <div className="max-w-7xl mx-auto flex justify-around items-center h-12 md:h-16 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-ink/40">
           {[
@@ -81,10 +87,8 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
         </div>
       </div>
 
-      {/* 4. 模块化内容区域 */}
+      {/* 4. Content */}
       <main className="max-w-7xl mx-auto px-6 md:px-24">
-        
-        {/* Tab 1: 故事与解构 */}
         {activeTab === 'story' && (
           <div className="py-12 md:py-24 animate-fade-in space-y-16">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -104,7 +108,6 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
           </div>
         )}
 
-        {/* Tab 2: 分子炼金术 */}
         {activeTab === 'science' && (
           <div className="py-12 md:py-24 animate-fade-in space-y-12">
             <div className="text-center md:text-left">
@@ -131,7 +134,6 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
           </div>
         )}
 
-        {/* Tab 3: 指南与场景 */}
         {activeTab === 'guide' && (
           <div className="py-12 md:py-24 animate-fade-in space-y-16">
             <div className="bg-sage p-8 md:p-16 rounded-[3.5rem] text-white space-y-10">
@@ -153,24 +155,9 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
                 </div>
               </div>
             </div>
-            
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8">
-               {[
-                 { t: "爆竹", i: "🧨", c: "bg-red-50" },
-                 { t: "雷电", i: "⚡", c: "bg-blue-50" },
-                 { t: "施工", i: "🔨", c: "bg-amber-50" },
-                 { t: "乔迁", i: "🏠", c: "bg-green-50" }
-               ].map((s, i) => (
-                 <div key={i} className={`flex flex-col items-center justify-center p-6 ${s.c} rounded-[2rem] border border-ink/5`}>
-                   <span className="text-3xl mb-3">{s.i}</span>
-                   <p className="font-bold text-xs">{s.t}</p>
-                 </div>
-               ))}
-            </div>
           </div>
         )}
 
-        {/* 社交/QR 区域 (始终显示在末尾) */}
         <section className="py-16 border-t border-ink/10 mt-12">
             <div className="flex flex-col md:flex-row items-center justify-between gap-10">
               <div className="text-center md:text-left space-y-4">
@@ -179,14 +166,13 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
                 </div>
                 <h4 className="text-xl md:text-3xl text-ink/60 font-medium">扫码找到我们</h4>
               </div>
-              <div className="w-32 h-32 md:w-48 md:h-48 p-2 bg-white rounded-2xl shadow-lg border border-brand-green/5">
-                <img src={qrImage} className="w-full h-full object-contain grayscale-[0.2] opacity-80" alt="QR" />
+              <div className="w-32 h-32 md:w-48 md:h-48 p-2 bg-white rounded-2xl shadow-lg border border-brand-green/5 overflow-hidden">
+                <img src={qrImage} className="w-full h-full object-contain" alt="QR Code" />
               </div>
             </div>
         </section>
       </main>
 
-      {/* 5. 悬浮购买栏 (移动端核心优化) */}
       <div className="fixed bottom-0 inset-x-0 z-[120] bg-white/95 backdrop-blur-2xl border-t border-brand-green/10 p-4 md:p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex flex-col">
