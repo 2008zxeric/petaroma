@@ -17,8 +17,8 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   // 【二维码与链接配置区域】
   // ==========================================
   
-  // 1. 您想让用户扫码后跳转到的链接（在此替换成您自己的主页、官网或店铺 URL）
-  const myDestinationUrl = "https://www.xiaohongshu.com/search_result?keyword=它香PetScent"; 
+  // 1. 您想让用户扫码后跳转到的链接（已更新为您的最新链接）
+  const myDestinationUrl = "https://xhslink.com/m/aqTp5izPC8"; 
 
   // 2. 默认尝试加载您在 public 文件夹下的图片路径
   const [qrSrc, setQrSrc] = useState("/qr-code.png");
@@ -27,7 +27,7 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   const fallbackQrApi = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(myDestinationUrl)}`;
 
   const handleQrError = () => {
-    console.warn("未找到本地图片 /qr-code.png，已自动切换为动态生成的二维码。");
+    console.warn("未找到本地图片 /qr-code.png，已自动切换为指向最新链接的动态二维码。");
     setQrSrc(fallbackQrApi);
   };
   
@@ -210,4 +210,3 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
 };
 
 export default ProductDetail;
-    
