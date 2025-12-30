@@ -198,18 +198,23 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
         </section>
       </main>
 
+      {/* 底部购买/咨询栏 */}
       <div className="fixed bottom-0 inset-x-0 z-[120] bg-white/95 backdrop-blur-2xl border-t border-brand-green/10 p-4 md:p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.2em] hidden md:block">{product.en}</span>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-ink">¥298</span>
-              <span className="text-[10px] text-ink/20 line-through">¥358</span>
+              <span className="text-lg md:text-2xl font-bold text-brand-green">欢迎小红书咨询</span>
             </div>
           </div>
-          <button className="px-8 md:px-16 py-4 md:py-6 bg-brand-green text-white rounded-full text-xs md:text-sm font-bold uppercase tracking-[0.3em] shadow-xl hover:scale-105 active:scale-95 transition-all">
-            Buy Now / 请领
-          </button>
+          <a 
+            href={myDestinationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 md:px-16 py-4 md:py-6 bg-brand-green text-white rounded-full text-xs md:text-sm font-bold uppercase tracking-[0.3em] shadow-xl hover:scale-105 active:scale-95 transition-all text-center"
+          >
+            Consult / 立即咨询
+          </a>
         </div>
       </div>
 
