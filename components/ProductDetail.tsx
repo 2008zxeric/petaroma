@@ -14,11 +14,23 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   const [activeTab, setActiveTab] = useState<'story' | 'science' | 'guide'>('story');
   
   // ==========================================
-  // 【已更换为本地二维码引用】
+  // 【二维码与链接配置区域】
   // ==========================================
-  // 确保您的图片已上传至 GitHub 的 public/ 文件夹，且文件名与下方一致
-  // 如果您的文件名是 my-qr.jpg，请修改为 "/my-qr.jpg"
-  const qrImage = "/qr-code.png"; 
+  
+  // 1. 您想让用户扫码后跳转到的链接（在此替换成您自己的主页、官网或店铺 URL）
+  const myDestinationUrl = "https://www.xiaohongshu.com/search_result?keyword=它香PetScent"; 
+
+  // 2. 默认尝试加载您在 public 文件夹下的图片路径
+  const [qrSrc, setQrSrc] = useState("/qr-code.png");
+
+  // 3. 备选方案：如果本地图片加载失败，则使用 API 在线生成跳转到上述链接的二维码
+  const fallbackQrApi = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(myDestinationUrl)}`;
+
+  const handleQrError = () => {
+    console.warn("未找到本地图片 /qr-code.png，已自动切换为动态生成的二维码。");
+    setQrSrc(fallbackQrApi);
+  };
+  
   // ==========================================
 
   const heroImage = "https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&q=85&w=2400";
@@ -167,7 +179,12 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
                 <h4 className="text-xl md:text-3xl text-ink/60 font-medium">扫码找到我们</h4>
               </div>
               <div className="w-32 h-32 md:w-48 md:h-48 p-2 bg-white rounded-2xl shadow-lg border border-brand-green/5 overflow-hidden">
-                <img src={qrImage} className="w-full h-full object-contain" alt="QR Code" />
+                <img 
+                  src={qrSrc} 
+                  className="w-full h-full object-contain" 
+                  alt="QR Code" 
+                  onError={handleQrError}
+                />
               </div>
             </div>
         </section>
@@ -193,3 +210,4 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
 };
 
 export default ProductDetail;
+    
