@@ -10,25 +10,6 @@ const AIConsultant: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [advice, setAdvice] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [needsKey, setNeedsKey] = useState(false);
-
-  const getAIStudio = () => (window as any).aistudio;
-
-  const checkAndOpenKeySelector = async () => {
-    const aistudio = getAIStudio();
-    if (aistudio) {
-      try {
-        const hasKey = await aistudio.hasSelectedApiKey();
-        if (!hasKey) {
-          await aistudio.openSelectKey();
-          return true;
-        }
-      } catch (e) {
-        console.error("AIStudio key check failed", e);
-      }
-    }
-    return true;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,44 +18,27 @@ const AIConsultant: React.FC = () => {
     setLoading(true);
     setAdvice(null);
     setErrorMsg(null);
-    setNeedsKey(false);
     
     try {
-      // 规则要求：在使用高级模型前确保 key 授权
-      await checkAndOpenKeySelector();
-
       const corePetType = petType.split(' | ')[0];
       const result = await getPetScentAdvice(corePetType, behavior, 'zh');
       setAdvice(result);
     } catch (error: any) { 
       console.error("Diagnosis Error:", error);
-      
       const errorString = error?.message || String(error);
       
-      // 捕获 API 异常，引导用户进行 Key 选择
       if (
         errorString.includes("missing") || 
         errorString.includes("API key") || 
         errorString.includes("403") || 
-        errorString.includes("401") ||
         errorString.includes("Requested entity was not found")
       ) {
-        setErrorMsg("API Key 未授权或已失效（美国 Vercel 环境可能需要重新确认）。请点击下方按钮选择有效的 API Key（需关联付费项目）。");
-        setNeedsKey(true);
+        setErrorMsg("API Key 缺失或无效。请检查您的环境变量配置。");
       } else {
-        setErrorMsg("深度推理分析遇到技术阻碍，请检查您的网络连接或稍后再试。");
+        setErrorMsg("分析暂时遇到阻碍，请稍后重试。");
       }
     } 
     finally { setLoading(false); }
-  };
-
-  const handleOpenKey = async () => {
-    const aistudio = getAIStudio();
-    if (aistudio) {
-      await aistudio.openSelectKey();
-      setErrorMsg(null);
-      setNeedsKey(false);
-    }
   };
 
   return (
@@ -113,30 +77,13 @@ const AIConsultant: React.FC = () => {
             <textarea 
               value={behavior}
               onChange={(e) => setBehavior(e.target.value)}
-              placeholder="请描述宠物的异常行为（如：突然变得粘人、半夜嚎叫等）..."
+              placeholder="请用中文描述宠物的异常行为..."
               className="w-full bg-white border border-brand-green/5 rounded-[1.5rem] md:rounded-[3rem] py-6 md:py-10 px-6 md:px-12 text-xs md:text-base font-medium min-h-[160px] resize-none outline-none focus:ring-2 focus:ring-brand-green/10 transition-all"
             />
 
             {errorMsg && (
-              <div className="space-y-4">
-                <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center animate-fade-in">
-                  {errorMsg}
-                </div>
-                {needsKey && getAIStudio() && (
-                  <div className="space-y-3">
-                    <button 
-                      type="button"
-                      onClick={handleOpenKey}
-                      className="w-full py-4 bg-brand-green text-white rounded-full text-[10px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg"
-                    >
-                      重新选择并授权 API KEY
-                    </button>
-                    <p className="text-[9px] text-center text-ink/30 italic">
-                      提示：请确保选择一个已开启账单（Paid Project）的 Google Cloud 项目。<br/>
-                      <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="underline hover:text-brand-green">查看计费文档</a>
-                    </p>
-                  </div>
-                )}
+              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center">
+                {errorMsg}
               </div>
             )}
 
@@ -160,7 +107,7 @@ const AIConsultant: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-xl md:text-3xl text-ink font-serif-brand font-bold">{t.resultTitle}</h3>
-                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Logic Analysis Complete</p>
+                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Clinical Reasoning Report</p>
                   </div>
                 </div>
               </div>
@@ -168,21 +115,21 @@ const AIConsultant: React.FC = () => {
               <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-8">
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为逻辑推理 | Reasoning Logic</span>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为逻辑推理</span>
                     <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed mt-2 italic border-l-2 border-brand-green/10 pl-4">{advice.analysis}</p>
                   </div>
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">分子干预路径 | Molecular Mechanism</span>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">分子干预路径</span>
                     <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed mt-2">{advice.scentLogic}</p>
                   </div>
                 </div>
                 <div className="bg-canvas/50 p-6 md:p-10 rounded-[2rem] border border-brand-green/5 space-y-6">
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">Recommended Scheme</span>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">推荐方案</span>
                     <h4 className="text-xl md:text-2xl font-serif-brand font-bold text-brand-green mt-1">{advice.productRecommendation}</h4>
                   </div>
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-ink/30 font-bold">Environmental Advice</span>
+                    <span className="text-[9px] uppercase tracking-widest text-ink/30 font-bold">环境建议</span>
                     <p className="text-[11px] text-ink/50 leading-relaxed mt-1">{advice.envAdvice}</p>
                   </div>
                   <div className="pt-4 border-t border-brand-green/10">
