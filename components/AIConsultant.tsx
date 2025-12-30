@@ -23,12 +23,8 @@ const AIConsultant: React.FC = () => {
       const result = await getPetScentAdvice(corePetType, behavior, 'zh');
       setAdvice(result);
     } catch (error: any) { 
-      console.error("Detailed Error:", error);
-      // 提取最有用的错误信息
-      const friendlyMsg = error.message?.includes('API_KEY') 
-        ? "API Key 配置有误，请检查环境变量。" 
-        : error.message;
-      setErrorMsg(friendlyMsg || "系统繁忙，推理引擎暂时无法响应。");
+      console.error("Diagnosis Error:", error);
+      setErrorMsg("分析暂时遇到问题，请稍后重试。");
     } 
     finally { setLoading(false); }
   };
@@ -75,7 +71,7 @@ const AIConsultant: React.FC = () => {
 
             {errorMsg && (
               <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center animate-fade-in">
-                诊断暂时中断: {errorMsg}
+                {errorMsg}
               </div>
             )}
 
@@ -84,7 +80,7 @@ const AIConsultant: React.FC = () => {
                 <div className="flex items-center justify-center gap-3">
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                  <span className="animate-pulse">正在进行深度逻辑推理 (Reasoning...)</span>
+                  <span className="animate-pulse">正在进行深度逻辑推理...</span>
                 </div>
               ) : t.btnSubmit}
             </button>
