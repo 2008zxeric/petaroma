@@ -17,7 +17,7 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
   // 【二维码与链接配置区域】
   // ==========================================
   
-  // 1. 您想让用户扫码后跳转到的链接（已更新为您的最新链接）
+  // 1. 您想让用户扫码后跳转到的链接
   const myDestinationUrl = "https://xhslink.com/m/aqTp5izPC8"; 
 
   // 2. 默认尝试加载您在 public 文件夹下的图片路径
@@ -178,14 +178,22 @@ const ProductDetail: React.FC<Props> = ({ productId, onBack }) => {
                 </div>
                 <h4 className="text-xl md:text-3xl text-ink/60 font-medium">扫码找到我们</h4>
               </div>
-              <div className="w-32 h-32 md:w-48 md:h-48 p-2 bg-white rounded-2xl shadow-lg border border-brand-green/5 overflow-hidden">
+              
+              {/* 二维码区域：包裹链接使其可点击 */}
+              <a 
+                href={myDestinationUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="点击跳转到小红书"
+                className="w-32 h-32 md:w-48 md:h-48 p-2 bg-white rounded-2xl shadow-lg border border-brand-green/5 overflow-hidden block transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              >
                 <img 
                   src={qrSrc} 
                   className="w-full h-full object-contain" 
                   alt="QR Code" 
                   onError={handleQrError}
                 />
-              </div>
+              </a>
             </div>
         </section>
       </main>
