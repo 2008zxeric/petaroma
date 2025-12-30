@@ -96,13 +96,14 @@ export const translations = {
       loading: "萃取色彩中 Extracting..."
     },
     consultant: {
-      tag: "DEEPSEEK REASONING",
-      title: "AI 芳疗咨询师",
-      titleEn: "AI Scent Advisor",
-      desc: "基于宠物边缘系统与植物化学的深度推理建议。",
-      btnSubmit: "发起诊断 Start Diagnosis",
-      loading: "引擎推理中 Reasoning...",
-      resultTitle: "推理报告",
+      tag: "PSL REASONING ENGINE",
+      title: "深度推理咨询师",
+      titleEn: "Deep Scent Advisor",
+      desc: "采用逻辑推理引擎，基于边缘系统与植物化学提供深度建议。",
+      disclaimer: "基于 Gemini 分析，仅供参考。具体应对信息及深度方案请与咨询师（小红书）沟通了解。",
+      btnSubmit: "开启深度推理 Start Reasoning",
+      loading: "深度推理逻辑中 Reasoning...",
+      resultTitle: "逻辑诊断报告",
       resultSub: "Clinical Reasoning Report",
       petTypes: [
         "猫咪 | Cat", 
@@ -113,6 +114,11 @@ export const translations = {
         "爬宠 | Exotic"
       ],
       examples: ["频繁嚎叫 Howling", "过度舔毛 Licking", "食欲减退 Anorexia"]
+    },
+    homeQr: {
+      title: "连接自然与生命",
+      titleEn: "Interspecies Connection",
+      desc: "点击或扫码，关注我们的官方小红书，获取最新宠物芳疗动态。"
     },
     footer: {
       desc: "自然之息，跨物种桥梁。",
@@ -232,11 +238,12 @@ export const translations = {
       loading: "Extracting Colors..."
     },
     consultant: {
-      tag: "AI REASONING",
-      title: "AI Scent Advisor",
-      titleEn: "AI Scent Advisor",
-      desc: "Deep reasoning suggestions based on pet limbic system and phytochemistry.",
-      btnSubmit: "Start Diagnosis",
+      tag: "PSL REASONING ENGINE",
+      title: "Deep Reasoning Advisor",
+      titleEn: "Deep Scent Advisor",
+      desc: "Using the PSL reasoning engine to provide deep suggestions based on the limbic system.",
+      disclaimer: "Based on Gemini analysis, for reference only. Please contact the consultant (Red) for details.",
+      btnSubmit: "Start Reasoning",
       loading: "Reasoning...",
       resultTitle: "Reasoning Report",
       resultSub: "Clinical Reasoning Report",
@@ -249,6 +256,11 @@ export const translations = {
         "Exotic"
       ],
       examples: ["Howling", "Licking", "Anorexia"]
+    },
+    homeQr: {
+      title: "Connecting Life & Nature",
+      titleEn: "Interspecies Connection",
+      desc: "Click or scan to follow us on Xiaohongshu for the latest pet aromatherapy updates."
     },
     footer: {
       desc: "Breath of nature, bridge between species.",
