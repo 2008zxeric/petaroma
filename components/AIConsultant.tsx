@@ -53,6 +53,10 @@ const AIConsultant: React.FC = () => {
             </div>
             <h2 className="text-2xl md:text-5xl font-bold text-ink font-serif-brand mb-3">{t.title}</h2>
             <p className="text-ink/40 text-[10px] md:text-base font-medium italic tracking-tight">{t.desc}</p>
+            {/* 新增免责声明 */}
+            <p className="text-ink/30 text-[9px] md:text-[11px] mt-4 max-w-lg mx-auto leading-relaxed italic border-t border-brand-green/5 pt-4">
+              {t.disclaimer}
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6 md:space-y-12 relative z-10">
