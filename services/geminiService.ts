@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 
 /**
@@ -12,38 +13,58 @@ declare const process: {
 const getAIInstance = () => {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
-    console.error("Critical Error: API_KEY is missing.");
+    console.error("Critical Error: API_KEY is missing from environment.");
   }
+  // 每次调用时重新实例化，确保使用最新的环境变量
   return new GoogleGenAI({ apiKey: apiKey || "" });
+};
+
+/**
+ * 辅助函数：从模型返回的字符串中提取纯 JSON
+ */
+const extractJson = (text: string) => {
+  try {
+    // 尝试直接解析
+    return JSON.parse(text);
+  } catch (e) {
+    // 如果包含 Markdown 代码块，尝试正则提取
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      try {
+        return JSON.parse(match[0]);
+      } catch (innerE) {
+        throw new Error("JSON extraction failed after regex match.");
+      }
+    }
+    throw new Error("No valid JSON found in response.");
+  }
 };
 
 export const getPetScentAdvice = async (petType: string, behavior: string, lang: 'zh' | 'en' = 'zh') => {
   const ai = getAIInstance();
   
   const systemInstruction = `
-    你是一位「它香 (pet aroma LAB)」资深跨物种行为分析师，当前配备了业界领先的深度推理 (Deep Reasoning) 引擎。
-    你的任务是基于分子芳疗学和宠物边缘系统反应，为用户提供专业的临床级咨询报告。
+    你是一位「它香 (pet aroma LAB)」资深跨物种行为分析师。
+    你当前正在运行深度推理 (Deep Reasoning) 模式，模拟类似 DeepSeek-R1 的思考过程。
     
-    推理流程要求（请在内部思考过程中严格执行）：
-    1. 【物种敏感点分析】：分析 ${petType} 特有的感官敏感点（如嗅球神经密度、信息素受体分布）。
-    2. 【压力源逆向推理】：针对行为 "${behavior}"，逆向推导其底层的生物学情绪（应激、焦虑、无聊等）。
-    3. 【神经调节逻辑】：阐述特定植物分子（如倍半萜类、单萜醇等）如何穿过血脑屏障并影响边缘系统 (Limbic System)。
-    4. 【精准处方】：从雷雨安 (Storm)、暂别安 (Absence)、出行安 (Road)、窝窝安 (Sleep) 中选一。
+    任务：基于分子芳疗学和宠物边缘系统反应，为用户提供专业的临床级咨询报告。
+    
+    推理要求：
+    1. 【逆向推导】：从行为 "${behavior}" 逆推宠物的内分泌状态。
+    2. 【分子调节】：说明特定植物化学成分如何干预神经传递。
+    3. 【去人类中心化】：严禁使用“它很调皮”等拟人化词汇，使用“边缘系统高度活跃”等专业术语。
 
-    输出规范：
-    - 使用 ${lang === 'zh' ? '中文' : 'English'}，关键术语附带英文。
-    - 严禁拟人化，坚持以“去人类中心化”的视角进行分析。
-    - 报告应具有深度逻辑性，而非简单的常识陈述。
+    输出必须是严格的 JSON 格式。
   `;
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview', // 使用最强大的 Pro 模型进行深度推理
-      contents: `针对 ${petType} 的行为 "${behavior}" 进行最高级别的深度逻辑推理并提供报告。`,
+      model: 'gemini-3-pro-preview',
+      contents: `针对 ${petType} 的行为 "${behavior}" 进行深度逻辑推理并提供报告。`,
       config: {
         systemInstruction: systemInstruction,
-        // 开启最高 32k 的推理预算，提供类似 DeepSeek-R1 的超强思维链能力
-        thinkingConfig: { thinkingBudget: 32768 }, 
+        // 将推理预算平衡在 16000，既保证深度又减少大陆网络环境下的超时风险
+        thinkingConfig: { thinkingBudget: 16000 }, 
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -59,10 +80,14 @@ export const getPetScentAdvice = async (petType: string, behavior: string, lang:
       }
     });
 
-    return JSON.parse(response.text || '{}');
-  } catch (e) {
-    console.error("AI Reasoning Error:", e);
-    throw new Error("Reasoning Engine is currently busy or API_KEY is invalid.");
+    return extractJson(response.text || '{}');
+  } catch (e: any) {
+    console.error("AI Reasoning Error Details:", e);
+    // 抛出更具体的错误信息
+    if (e.message?.includes('fetch')) {
+      throw new Error("网络连接失败：请确保您的环境可以访问 Google Gemini API (需要科学上网)。");
+    }
+    throw e;
   }
 };
 
@@ -75,7 +100,7 @@ export const editPetImage = async (base64Image: string, mimeType: string, prompt
       contents: {
         parts: [
           { inlineData: { data: base64Image, mimeType: mimeType } },
-          { text: `Enhance this pet photo for 'pet aroma LAB'. Prompt: ${prompt}. Rules: Warm textures, cinematic lighting, ultra-high quality.` },
+          { text: `Enhance this pet photo for 'pet aroma LAB'. Style: Cinematic, high-end aromatherapy clinic vibe. Prompt: ${prompt}` },
         ],
       },
     });
