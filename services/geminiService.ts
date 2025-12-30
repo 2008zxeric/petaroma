@@ -13,10 +13,9 @@ declare const process: {
 const getAIInstance = () => {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
-    console.error("Critical Error: API_KEY is missing from environment.");
+    throw new Error("API_KEY is missing. Please check your environment variables.");
   }
-  // 每次调用时重新实例化，确保使用最新的环境变量
-  return new GoogleGenAI({ apiKey: apiKey || "" });
+  return new GoogleGenAI({ apiKey });
 };
 
 /**
@@ -24,19 +23,17 @@ const getAIInstance = () => {
  */
 const extractJson = (text: string) => {
   try {
-    // 尝试直接解析
     return JSON.parse(text);
   } catch (e) {
-    // 如果包含 Markdown 代码块，尝试正则提取
     const match = text.match(/\{[\s\S]*\}/);
     if (match) {
       try {
         return JSON.parse(match[0]);
       } catch (innerE) {
-        throw new Error("JSON extraction failed after regex match.");
+        throw new Error("Failed to parse reasoning output as JSON.");
       }
     }
-    throw new Error("No valid JSON found in response.");
+    throw new Error("The reasoning engine returned an invalid format.");
   }
 };
 
@@ -44,77 +41,79 @@ export const getPetScentAdvice = async (petType: string, behavior: string, lang:
   const ai = getAIInstance();
   
   const systemInstruction = `
-    你是一位「它香 (pet aroma LAB)」资深跨物种行为分析师。
-    你当前正在运行深度推理 (Deep Reasoning) 模式，模拟类似 DeepSeek-R1 的思考过程。
+    You are a senior cross-species behavior analyst at 'pet aroma LAB'.
+    Your task is to provide a clinical-grade sensory report based on molecular aromatherapy and the limbic system.
     
-    任务：基于分子芳疗学和宠物边缘系统反应，为用户提供专业的临床级咨询报告。
+    Logic Requirements:
+    1. 【Biological Reasoning】: Analyze ${petType}'s behavior "${behavior}" from a neurological perspective.
+    2. 【Molecular Intervention】: Explain how specific botanical molecules (e.g., Sesquiterpenes) affect the CNS.
+    3. 【De-humanized Perspective】: Do not use anthropomorphic terms like "naughty". Use "limbic hyperarousal".
     
-    推理要求：
-    1. 【逆向推导】：从行为 "${behavior}" 逆推宠物的内分泌状态。
-    2. 【分子调节】：说明特定植物化学成分如何干预神经传递。
-    3. 【去人类中心化】：严禁使用“它很调皮”等拟人化词汇，使用“边缘系统高度活跃”等专业术语。
-
-    输出必须是严格的 JSON 格式。
+    Output must be a strict JSON object.
   `;
 
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
-      contents: `针对 ${petType} 的行为 "${behavior}" 进行深度逻辑推理并提供报告。`,
-      config: {
-        systemInstruction: systemInstruction,
-        // 将推理预算平衡在 16000，既保证深度又减少大陆网络环境下的超时风险
-        thinkingConfig: { thinkingBudget: 16000 }, 
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            analysis: { type: Type.STRING, description: "深度行为逻辑推理分析" },
-            scentLogic: { type: Type.STRING, description: "分子级干预机制科学说明" },
-            envAdvice: { type: Type.STRING, description: "环境补偿建议" },
-            productRecommendation: { type: Type.STRING, description: "建议气味方案名称" },
-            safetyNote: { type: Type.STRING, description: "安全注意事项" }
-          },
-          required: ["analysis", "scentLogic", "envAdvice", "productRecommendation", "safetyNote"]
-        }
-      }
-    });
+  // 尝试使用最强大的 Pro 模型，如果失败则回退到 Flash
+  const modelsToTry = ['gemini-3-pro-preview', 'gemini-3-flash-preview'];
+  let lastError: any = null;
 
-    return extractJson(response.text || '{}');
-  } catch (e: any) {
-    console.error("AI Reasoning Error Details:", e);
-    // 抛出更具体的错误信息
-    if (e.message?.includes('fetch')) {
-      throw new Error("网络连接失败：请确保您的环境可以访问 Google Gemini API (需要科学上网)。");
+  for (const modelName of modelsToTry) {
+    try {
+      console.log(`Attempting reasoning with model: ${modelName}...`);
+      const response = await ai.models.generateContent({
+        model: modelName,
+        contents: `Provide a deep reasoning report for ${petType} showing "${behavior}".`,
+        config: {
+          systemInstruction: systemInstruction,
+          // 设置推理预算。Pro 支持高达 32k，但为保证响应稳定性，我们设为 12k
+          thinkingConfig: { thinkingBudget: 12000 }, 
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              analysis: { type: Type.STRING },
+              scentLogic: { type: Type.STRING },
+              envAdvice: { type: Type.STRING },
+              productRecommendation: { type: Type.STRING },
+              safetyNote: { type: Type.STRING }
+            },
+            required: ["analysis", "scentLogic", "envAdvice", "productRecommendation", "safetyNote"]
+          }
+        }
+      });
+
+      return extractJson(response.text || '{}');
+    } catch (e: any) {
+      console.warn(`Model ${modelName} failed:`, e.message);
+      lastError = e;
+      // 如果是 API Key 错误，直接跳出不再重试
+      if (e.message?.includes('API key') || e.status === 403) break;
+      continue;
     }
-    throw e;
   }
+
+  // 如果所有模型都失败，抛出真实错误
+  throw new Error(`Reasoning Failed: ${lastError?.message || "Internal Engine Error"}`);
 };
 
 export const editPetImage = async (base64Image: string, mimeType: string, prompt: string) => {
   const ai = getAIInstance();
-  
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: {
         parts: [
           { inlineData: { data: base64Image, mimeType: mimeType } },
-          { text: `Enhance this pet photo for 'pet aroma LAB'. Style: Cinematic, high-end aromatherapy clinic vibe. Prompt: ${prompt}` },
+          { text: `Enhance this pet photo for 'pet aroma LAB'. Cinematic lighting, warm texture. Prompt: ${prompt}` },
         ],
       },
     });
 
-    const candidate = response.candidates?.[0];
-    if (candidate?.content?.parts) {
-      for (const part of candidate.content.parts) {
-        if (part.inlineData) {
-          return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
-        }
-      }
+    const part = response.candidates?.[0]?.content?.parts.find(p => p.inlineData);
+    if (part?.inlineData) {
+      return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
     }
-    throw new Error("No image data returned from AI.");
-  } catch (e) {
+    throw new Error("Image generation failed.");
+  } catch (e: any) {
     console.error("Image Alchemy Error:", e);
     throw e;
   }
