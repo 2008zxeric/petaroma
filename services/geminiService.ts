@@ -7,10 +7,10 @@ import { GoogleGenAI, Type } from "@google/genai";
  */
 
 export const getPetScentAdvice = async (petType: string, behavior: string, lang: 'zh' | 'en' = 'zh') => {
-  // Always use process.env.API_KEY directly when initializing the GoogleGenAI instance.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // 确保使用 process.env.API_KEY
+  const apiKey = process.env.API_KEY as string;
+  const ai = new GoogleGenAI({ apiKey });
   
-  // 强化系统指令：强制要求中文深度推理
   const systemInstruction = `
     你是一名来自“它香 (pet aroma LAB)”的专家级跨物种行为分析师。
     你的目标是利用深度推理能力，分析宠物行为背后的生物学机制。
@@ -49,8 +49,8 @@ export const getPetScentAdvice = async (petType: string, behavior: string, lang:
   } catch (error: any) {
     console.error("Pro Model Failed:", error);
     
-    // 备选方案：使用 Flash 模型（响应更快，适合兜底）
-    const fallbackAi = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    // 备选方案：使用 Flash 模型
+    const fallbackAi = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
     const fallbackResponse = await fallbackAi.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `请用中文对${petType}的"${behavior}"行为提供芳疗方案。JSON格式输出。`,
@@ -71,13 +71,15 @@ export const getPetScentAdvice = async (petType: string, behavior: string, lang:
       }
     });
     
-    return JSON.parse(fallbackResponse.text || '{}');
+    const fallbackText = fallbackResponse.text;
+    if (!fallbackText) return {};
+    return JSON.parse(fallbackText);
   }
 };
 
 export const editPetImage = async (base64Image: string, mimeType: string, prompt: string) => {
-  // Always use process.env.API_KEY directly when initializing the GoogleGenAI instance.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = process.env.API_KEY as string;
+  const ai = new GoogleGenAI({ apiKey });
   
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash-image',
@@ -89,9 +91,24 @@ export const editPetImage = async (base64Image: string, mimeType: string, prompt
     },
   });
 
-  const part = response.candidates?.[0]?.content?.parts.find(p => p.inlineData);
-  if (part?.inlineData) {
-    return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+  // 严谨的空值检查流程，解决 TS2532 错误
+  const candidates = response.candidates;
+  if (!candidates || candidates.length === 0) {
+    throw new Error("IMAGE_LAB_ERROR: No candidates returned");
   }
-  throw new Error("IMAGE_LAB_ERROR");
+
+  const content = candidates[0].content;
+  if (!content || !content.parts) {
+    throw new Error("IMAGE_LAB_ERROR: No content or parts returned");
+  }
+
+  // 寻找包含 inlineData 的 part
+  const imagePart = content.parts.find(p => p.inlineData !== undefined);
+  
+  if (imagePart && imagePart.inlineData && imagePart.inlineData.data) {
+    const returnMimeType = imagePart.inlineData.mimeType || 'image/png';
+    return `data:${returnMimeType};base64,${imagePart.inlineData.data}`;
+  }
+  
+  throw new Error("IMAGE_LAB_ERROR: No image data found in response parts");
 };
