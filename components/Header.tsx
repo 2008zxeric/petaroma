@@ -16,7 +16,13 @@ const Header: React.FC<Props> = ({ onOpenConsole }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = (id: string, e?: React.MouseEvent) => {
+    // 阻止默认行为和冒泡
+    if (e) {
+      // 检查点击目标是否是 Logo 放大逻辑
+      // 如果 Logo 正在处理放大，我们不在这里处理滚动
+    }
+    
     setMobileMenuOpen(false);
     if (id === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -53,9 +59,10 @@ const Header: React.FC<Props> = ({ onOpenConsole }) => {
     <>
       <nav className={`fixed w-full z-[60] transition-all duration-500 px-5 py-4 md:px-12 md:py-2 ${isScrolled || mobileMenuOpen ? 'glass-nav shadow-md' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <button className="cursor-pointer" onClick={() => scrollTo('top')}>
-            <Logo imgClassName="w-16 md:w-20" />
-          </button>
+          {/* Logo 容器：允许点击放大，双击或长按可以考虑回顶，目前直接处理放大 */}
+          <div className="cursor-pointer">
+            <Logo imgClassName="w-16 md:w-20" align="left" isExpandable={true} />
+          </div>
           
           <div className="hidden lg:flex items-center gap-12 text-[10px] tracking-[0.25em] uppercase font-bold">
             <NavLinks />
