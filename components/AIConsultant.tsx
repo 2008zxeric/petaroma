@@ -23,8 +23,12 @@ const AIConsultant: React.FC = () => {
       const result = await getPetScentAdvice(corePetType, behavior, 'zh');
       setAdvice(result);
     } catch (error: any) { 
-      console.error(error); 
-      setErrorMsg(error.message || "推理引擎连接中断，请检查网络设置或稍后重试。");
+      console.error("Detailed Error:", error);
+      // 提取最有用的错误信息
+      const friendlyMsg = error.message?.includes('API_KEY') 
+        ? "API Key 配置有误，请检查环境变量。" 
+        : error.message;
+      setErrorMsg(friendlyMsg || "系统繁忙，推理引擎暂时无法响应。");
     } 
     finally { setLoading(false); }
   };
@@ -34,18 +38,10 @@ const AIConsultant: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         <div className="bg-canvas/50 rounded-[2.5rem] md:rounded-[5rem] p-6 md:p-20 border border-brand-green/10 shadow-sm relative overflow-hidden">
           
-          {/* 背景装饰 */}
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <svg className="w-64 h-64 rotate-45" viewBox="0 0 200 200" fill="none">
-              <rect x="50" y="50" width="100" height="100" stroke="currentColor" strokeWidth="0.5"/>
-              <circle cx="100" cy="100" r="70" stroke="currentColor" strokeWidth="0.5"/>
-            </svg>
-          </div>
-
           <div className="text-center mb-8 md:mb-16">
             <div className="inline-flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
-              <span className="text-brand-green text-[9px] md:text-[11px] uppercase tracking-[0.5em] font-bold italic">PSL Deep Reasoning Advisor</span>
+              <span className="text-brand-green text-[9px] md:text-[11px] uppercase tracking-[0.5em] font-bold italic">Deep Reasoning Advisor</span>
             </div>
             <h2 className="text-2xl md:text-5xl font-bold text-ink font-serif-brand mb-3">{t.title}</h2>
             <p className="text-ink/40 text-[10px] md:text-base font-medium italic tracking-tight">{t.desc}</p>
@@ -70,36 +66,27 @@ const AIConsultant: React.FC = () => {
               ))}
             </div>
 
-            <div className="relative">
-              <textarea 
-                value={behavior}
-                onChange={(e) => setBehavior(e.target.value)}
-                placeholder="在此输入宠物的异常行为描述..."
-                className="w-full bg-white border border-brand-green/5 rounded-[1.5rem] md:rounded-[3rem] py-6 md:py-10 px-6 md:px-12 text-xs md:text-base font-medium shadow-inner min-h-[100px] md:min-h-[160px] resize-none outline-none focus:ring-2 focus:ring-brand-green/10 transition-all"
-              />
-              <div className="absolute bottom-6 right-8 text-[9px] uppercase tracking-widest text-ink/20 font-bold hidden md:block">
-                Deep Analysis Mode Active
-              </div>
-            </div>
+            <textarea 
+              value={behavior}
+              onChange={(e) => setBehavior(e.target.value)}
+              placeholder="请描述宠物的异常行为（如：突然变得粘人、半夜嚎叫等）..."
+              className="w-full bg-white border border-brand-green/5 rounded-[1.5rem] md:rounded-[3rem] py-6 md:py-10 px-6 md:px-12 text-xs md:text-base font-medium min-h-[160px] resize-none outline-none focus:ring-2 focus:ring-brand-green/10 transition-all"
+            />
 
             {errorMsg && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-500 text-[10px] md:text-xs font-medium text-center animate-fade-in">
-                ⚠️ {errorMsg}
+              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center animate-fade-in">
+                诊断暂时中断: {errorMsg}
               </div>
             )}
 
             <button disabled={loading || !behavior} className="w-full py-5 md:py-8 bg-brand-green text-white rounded-full text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold shadow-2xl disabled:opacity-20 active:scale-95 transition-all overflow-hidden relative">
-              <span className={loading ? 'opacity-0' : 'opacity-100'}>{t.btnSubmit}</span>
-              {loading && (
-                <div className="absolute inset-0 flex items-center justify-center gap-3">
-                  <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-duration:1s]"></span>
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:0.2s] [animation-duration:1s]"></span>
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:0.4s] [animation-duration:1s]"></span>
-                  </div>
-                  <span className="animate-pulse">深度逻辑推理中 (Deep Reasoning...)</span>
+              {loading ? (
+                <div className="flex items-center justify-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                  <span className="animate-pulse">正在进行深度逻辑推理 (Reasoning...)</span>
                 </div>
-              )}
+              ) : t.btnSubmit}
             </button>
           </form>
 
@@ -107,43 +94,38 @@ const AIConsultant: React.FC = () => {
             <div className="mt-10 md:mt-20 bg-white rounded-[2rem] p-6 md:p-16 shadow-2xl border border-brand-green/5 animate-fade-in-up">
               <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-brand-green/5 pb-6 mb-8 gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-brand-green/5 rounded-full flex items-center justify-center text-brand-green shrink-0">
+                  <div className="w-12 h-12 bg-brand-green/5 rounded-full flex items-center justify-center text-brand-green">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" strokeWidth="1.5"/></svg>
                   </div>
                   <div>
                     <h3 className="text-xl md:text-3xl text-ink font-serif-brand font-bold">{t.resultTitle}</h3>
-                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Logic Path Verified</p>
+                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Logic Analysis Complete</p>
                   </div>
-                </div>
-                <div className="flex flex-col md:items-end">
-                  <span className="text-[8px] font-bold text-brand-green px-3 py-1 bg-brand-green/5 rounded-full border border-brand-green/10 uppercase">Deep Reasoning Complete</span>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-8">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为推理逻辑 | Logic</span>
-                    </div>
-                    <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed italic border-l-2 border-brand-green/10 pl-4">{advice.analysis}</p>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为逻辑推理 | Reasoning Logic</span>
+                    <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed mt-2 italic border-l-2 border-brand-green/10 pl-4">{advice.analysis}</p>
                   </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">分子调节机制 | Mechanism</span>
-                    <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed">{advice.scentLogic}</p>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">分子干预路径 | Molecular Mechanism</span>
+                    <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed mt-2">{advice.scentLogic}</p>
                   </div>
                 </div>
                 <div className="bg-canvas/50 p-6 md:p-10 rounded-[2rem] border border-brand-green/5 space-y-6">
-                  <div className="space-y-2">
+                  <div>
                     <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">Recommended Scheme</span>
-                    <h4 className="text-xl md:text-2xl font-serif-brand font-bold text-brand-green">{advice.productRecommendation}</h4>
+                    <h4 className="text-xl md:text-2xl font-serif-brand font-bold text-brand-green mt-1">{advice.productRecommendation}</h4>
                   </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px] uppercase tracking-widest text-ink/30 font-bold">Strategy Advice</span>
-                    <p className="text-[11px] text-ink/50 leading-relaxed">{advice.envAdvice}</p>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-widest text-ink/30 font-bold">Environmental Advice</span>
+                    <p className="text-[11px] text-ink/50 leading-relaxed mt-1">{advice.envAdvice}</p>
                   </div>
                   <div className="pt-4 border-t border-brand-green/10">
-                    <p className="text-[9px] md:text-[11px] text-ink/40 leading-tight italic">Safety First: {advice.safetyNote}</p>
+                    <p className="text-[9px] md:text-[11px] text-ink/40 leading-tight">安全声明: {advice.safetyNote}</p>
                   </div>
                 </div>
               </div>
