@@ -10,23 +10,71 @@ const AIConsultant: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [advice, setAdvice] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [needsKey, setNeedsKey] = useState(false);
+
+  const getAIStudio = () => (window as any).aistudio;
+
+  const checkAndOpenKeySelector = async () => {
+    const aistudio = getAIStudio();
+    if (aistudio) {
+      try {
+        const hasKey = await aistudio.hasSelectedApiKey();
+        if (!hasKey) {
+          await aistudio.openSelectKey();
+          return true;
+        }
+      } catch (e) {
+        console.error("AIStudio key check failed", e);
+      }
+    }
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!behavior || loading) return;
+    
     setLoading(true);
     setAdvice(null);
     setErrorMsg(null);
+    setNeedsKey(false);
     
     try {
+      // 规则要求：在使用高级模型前确保 key 授权
+      await checkAndOpenKeySelector();
+
       const corePetType = petType.split(' | ')[0];
       const result = await getPetScentAdvice(corePetType, behavior, 'zh');
       setAdvice(result);
     } catch (error: any) { 
       console.error("Diagnosis Error:", error);
-      setErrorMsg("分析暂时遇到问题，请稍后重试。");
+      
+      const errorString = error?.message || String(error);
+      
+      // 捕获 API 异常，引导用户进行 Key 选择
+      if (
+        errorString.includes("missing") || 
+        errorString.includes("API key") || 
+        errorString.includes("403") || 
+        errorString.includes("401") ||
+        errorString.includes("Requested entity was not found")
+      ) {
+        setErrorMsg("API Key 未授权或已失效（美国 Vercel 环境可能需要重新确认）。请点击下方按钮选择有效的 API Key（需关联付费项目）。");
+        setNeedsKey(true);
+      } else {
+        setErrorMsg("深度推理分析遇到技术阻碍，请检查您的网络连接或稍后再试。");
+      }
     } 
     finally { setLoading(false); }
+  };
+
+  const handleOpenKey = async () => {
+    const aistudio = getAIStudio();
+    if (aistudio) {
+      await aistudio.openSelectKey();
+      setErrorMsg(null);
+      setNeedsKey(false);
+    }
   };
 
   return (
@@ -70,8 +118,25 @@ const AIConsultant: React.FC = () => {
             />
 
             {errorMsg && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center animate-fade-in">
-                {errorMsg}
+              <div className="space-y-4">
+                <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] md:text-xs font-medium text-center animate-fade-in">
+                  {errorMsg}
+                </div>
+                {needsKey && getAIStudio() && (
+                  <div className="space-y-3">
+                    <button 
+                      type="button"
+                      onClick={handleOpenKey}
+                      className="w-full py-4 bg-brand-green text-white rounded-full text-[10px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg"
+                    >
+                      重新选择并授权 API KEY
+                    </button>
+                    <p className="text-[9px] text-center text-ink/30 italic">
+                      提示：请确保选择一个已开启账单（Paid Project）的 Google Cloud 项目。<br/>
+                      <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="underline hover:text-brand-green">查看计费文档</a>
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
