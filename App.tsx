@@ -8,6 +8,7 @@ import ProductDetail from './components/ProductDetail';
 import SafetyStandard from './components/SafetyStandard';
 import AIConsultant from './components/AIConsultant';
 import ImageLab from './components/ImageLab';
+import HomeQR from './components/HomeQR';
 import ScentConsole from './components/ScentConsole';
 import Footer from './components/Footer';
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
               <ImageLab lang="zh" />
             </div>
             <AIConsultant />
+            <HomeQR />
           </div>
         ) : (
           /* 如果选中了产品，显示二级详情页 */
