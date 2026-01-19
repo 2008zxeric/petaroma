@@ -24,8 +24,8 @@ export const translations = {
     },
     philosophy: {
       tag: "DE-HUMANIZED OLFACTORY",
-      title: "去人类中心化的嗅觉修辞",
-      titleEn: "De-humanized Philosophy",
+      title: "它香 pet aroma | 去人类中心化的嗅觉修辞",
+      titleEn: "It Scent pet aroma | De-humanized Philosophy",
       quote: "“真正的尊重，是当它们闭上眼，能嗅到家以外的整片旷野。”",
       desc: "我们深知宠物嗅球的极度敏感。通过超临界萃取技术，精准控制分子挥发，温和作用于边缘系统。",
       row1: { label: "成分基底", val: "100% Organic", desc: "拒绝合成香精" },
@@ -115,6 +115,15 @@ export const translations = {
       ],
       examples: ["频繁嚎叫 Howling", "过度舔毛 Licking", "食欲减退 Anorexia"]
     },
+    console: {
+      welcome: "IT SCENT (pet aroma LAB) [Version 1.0.4]",
+      ready: "系统就绪。输入 'help' 获取命令列表。",
+      prompt: "PSL-CONSOLE >",
+      help: "可用命令: analyze [target], status, about, clear, exit",
+      statusMsg: "核心模块: 正常 | 分子库: 已连接 | 环境监测: 稳定",
+      aboutMsg: "它香 (pet aroma LAB) - 跨物种嗅觉沟通终端。",
+      unknown: "未知指令。输入 'help' 查看帮助。"
+    },
     homeQr: {
       title: "连接自然与生命",
       titleEn: "Interspecies Connection",
@@ -131,16 +140,8 @@ export const translations = {
         s1: "技术白皮书 Whitepaper",
         s2: "专家咨询 Contact"
       },
-      copy: "© 2024 它香 | pet aroma LAB."
-    },
-    console: {
-      welcome: ">>> 它香 (pet aroma LAB) 分子控制终端 v1.0.4",
-      ready: "系统就绪。输入 'help' 获取指令集。",
-      prompt: "PSL_CMD >",
-      help: "指令: help, status, about, analyze, clear, exit",
-      statusMsg: "模块: 在线 | 气味稳定性: 100% | 压力水平: 极低",
-      aboutMsg: "它香实验室：去人类中心化跨物种行为干预中心。",
-      unknown: "未知指令。输入 'help'。"
+      copy: "© 2024 它香 | pet aroma LAB.",
+      icp: "备案号：浙ICP备2026002171号"
     }
   },
   en: {
@@ -166,7 +167,7 @@ export const translations = {
     },
     philosophy: {
       tag: "DE-HUMANIZED OLFACTORY",
-      title: "De-humanized Olfactory Rhetoric",
+      title: "It Scent pet aroma | De-humanized Philosophy",
       titleEn: "De-humanized Philosophy",
       quote: "\"True respect is when they close their eyes and can smell the entire wilderness outside of home.\"",
       desc: "We are deeply aware of the extreme sensitivity of pet olfactory bulbs. Through supercritical extraction technology, we precisely control molecular volatilization to gently act on the limbic system.",
@@ -257,6 +258,15 @@ export const translations = {
       ],
       examples: ["Howling", "Licking", "Anorexia"]
     },
+    console: {
+      welcome: "IT SCENT (pet aroma LAB) [Version 1.0.4]",
+      ready: "System ready. Type 'help' for commands.",
+      prompt: "PSL-CONSOLE >",
+      help: "Available commands: analyze [target], status, about, clear, exit",
+      statusMsg: "Core: OK | Scent Database: CONNECTED | Environment: STABLE",
+      aboutMsg: "Pet Aroma LAB - Interspecies Olfactory Terminal.",
+      unknown: "Unknown command. Type 'help' for help."
+    },
     homeQr: {
       title: "Connecting Life & Nature",
       titleEn: "Interspecies Connection",
@@ -273,16 +283,8 @@ export const translations = {
         s1: "Whitepaper",
         s2: "Contact"
       },
-      copy: "© 2024 Pet Aroma | pet aroma LAB."
-    },
-    console: {
-      welcome: ">>> Pet Aroma LAB Molecular Control Terminal v1.0.4",
-      ready: "System Ready. Enter 'help' for commands.",
-      prompt: "PSL_CMD >",
-      help: "Commands: help, status, about, analyze, clear, exit",
-      statusMsg: "Module: Online | Stability: 100% | Stress Level: Low",
-      aboutMsg: "Pet Aroma Lab: De-humanized interspecies behavioral intervention center.",
-      unknown: "Unknown command. Enter 'help'."
+      copy: "© 2024 Pet Aroma | pet aroma LAB.",
+      icp: "ICP: 浙ICP备2026002171号"
     }
   }
 };
