@@ -127,7 +127,8 @@ export const translations = {
     homeQr: {
       title: "连接自然与生命",
       titleEn: "Interspecies Connection",
-      desc: "点击或扫码，关注我们的官方小红书，获取最新宠物芳疗动态。"
+      desc: "点击或扫码，关注我们的官方小红书，获取最新宠物芳疗动态。",
+      xhsLink: "https://xhslink.com/m/aqTp5izPC8"
     },
     footer: {
       desc: "自然之息，跨物种桥梁。",
@@ -141,7 +142,7 @@ export const translations = {
         s2: "专家咨询 Contact"
       },
       copy: "© 2024 它香 | pet aroma LAB.",
-      icp: "备案号：浙ICP备2026002171号"
+      icp: "备案号：A20251225-000015"
     }
   },
   en: {
@@ -284,7 +285,7 @@ export const translations = {
         s2: "Contact"
       },
       copy: "© 2024 Pet Aroma | pet aroma LAB.",
-      icp: "ICP: 浙ICP备2026002171号"
+      icp: "ICP: A20251225-000015"
     }
   }
 };
