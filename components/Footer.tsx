@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
         <div className="pt-10 border-t border-canvas/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-canvas/20 tracking-widest uppercase">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <p className="font-bold tracking-[0.2em]">{tZh.copy}</p>
-            {/* 备案号展示 */}
+            {/* 备案号展示 - 确保链接正确 */}
             <a 
               href="https://beian.miit.gov.cn/" 
               target="_blank" 
