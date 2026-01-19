@@ -33,7 +33,18 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="pt-10 border-t border-canvas/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-canvas/20 tracking-widest uppercase">
-          <p className="font-bold tracking-[0.2em]">{tZh.copy}</p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <p className="font-bold tracking-[0.2em]">{tZh.copy}</p>
+            {/* 备案号展示 */}
+            <a 
+              href="https://beian.miit.gov.cn/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="font-bold tracking-[0.1em] hover:text-mint transition-colors opacity-60 hover:opacity-100"
+            >
+              {tZh.icp}
+            </a>
+          </div>
           <div className="flex gap-10">
             {tZh.socials.map(s => <a key={s} href="#" className="hover:text-mint transition-all">{s}</a>)}
           </div>
