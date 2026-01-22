@@ -19,16 +19,16 @@ export const translations = {
       sub: "感知生命的律动",
       title: "每一缕清香，都是自然对生命的轻声细语。",
       titleEn: "Every Breeze, A Soft Whisper.",
-      desc: "比起‘产品’，我更愿意称其为跨物种的温柔对话。剔除人为权力，为我们的猫犬共创一片疗愈荒野。",
+      desc: "这是我与它们之间的温柔对话。剔除人为干扰，为猫犬共创一片疗愈荒野。",
       btnProducts: "探索方案 Explore",
       btnTest: "逻辑推演 Reason"
     },
     philosophy: {
       tag: "PERSONAL NOTES",
-      title: "它香 pet aroma宠物芳香生活 | 去人类中心化的嗅觉修辞",
+      title: "它香 pet aroma 宠物芳香生活 | 去人类中心化的嗅觉修辞",
       titleEn: "Personal Philosophy / 个人哲学",
       quote: "“真正的尊重，是当它们闭上眼，能嗅到家以外的整片旷野。”",
-      desc: "在这里，我们不关心人类觉得什么‘香’。我们只在乎那些极其敏感的灵魂（宠物），在这一分子尺度下是否感到自由与安宁。",
+      desc: "在这里，我不关心人类觉得什么‘香’。我只在乎那些极其敏感的灵魂（宠物），是否感到自由与安宁。",
       row1: { label: "手工记录", val: "Hand-Picked", desc: "自然主义" },
       row4: { label: "生理安全", val: "Non-Toxic", desc: "无害诺言" }
     },
@@ -42,21 +42,21 @@ export const translations = {
           top: "高地薰衣草 Lavender", mid: "罗马洋甘菊 Chamomile", base: "岩兰草 Vetiver",
           story: "某次暴风雨后，看着受惊的它突发的灵感。模拟母体费洛蒙，建立感官安全岛。",
           usage: "建议在预期巨响前30分钟开启。这是我为多物种家庭设计的安抚仪式。",
-          logic: "高浓度倍半萜类分子能产生如同‘大地母亲’般的包裹感。"
+          logic: "高浓度分子能产生如同‘大地母亲’般的包裹感。"
         },
         "2": { 
           name: "暂别安", en: "Absence", series: "Relax", 
           top: "苦橙叶 Petitgrain", mid: "马郁兰 Marjoram", base: "喜马拉雅雪松 Cedar",
           story: "专门为那些‘分离焦虑’的小家伙研发。通过木质调，重塑空间的安全边界。",
           usage: "出门前5分钟点燃一份宁静。让它在独处时，依然能感受到被爱包裹的记忆。",
-          logic: "苦橙叶酯类成分能阻断焦虑信号，建立稳定的情绪场域。"
+          logic: "苦橙叶成分能阻断焦虑信号，建立稳定的情绪场域。"
         },
         "3": { 
           name: "出行安", en: "Road", series: "Travel", 
           top: "生姜 Ginger", mid: "甜罗勒 Basil", base: "索马里乳香 Frankincense",
           story: "解决旅途中的眩晕与不安。姜酮分子能平衡自主神经，将变动化为‘森林迁徙’。",
           usage: "车载扩散器或点涂宠物箱边缘。乳香的沉稳，是我们在路上的底气。",
-          logic: "分子级干预，平衡前庭系统的过度活跃。"
+          logic: "分子级平衡前庭系统的过度活跃。"
         },
         "4": { 
           name: "窝窝安", en: "Sleep", series: "Recovery", 
@@ -89,7 +89,7 @@ export const translations = {
     },
     lab: {
       tag: "PERSONAL VISUALS",
-      title: "影像心境记录",
+      title: "影像心情记录",
       titleEn: "Mood Journal",
       upload: "上传你的记忆 / Upload",
       placeholder: "在此输入当时的意境与心境...",
@@ -100,11 +100,11 @@ export const translations = {
       tag: "LOGIC ENGINE",
       title: "逻辑推演笔记",
       titleEn: "Thinking Notes",
-      desc: "基于生物学与边缘系统的逻辑分析，为你提供私人建议。",
-      disclaimer: "这里只是我的研究心得分享，仅供参考。深度交流请与我在小红书直接联系。",
+      desc: "基于生物学与边缘系统的逻辑分析，提供私人心得。",
+      disclaimer: "这里只是我的心情日记分享，仅供参考。交流请在小红书直接联系。",
       btnSubmit: "发起推理 / Reason",
-      loading: "思维运行中...",
-      resultTitle: "逻辑推理简报",
+      loading: "笔记整理中...",
+      resultTitle: "推演报告",
       resultSub: "Personal Thinking Report",
       petTypes: ["猫咪 | Cat", "狗狗 | Dog", "兔子 | Rabbit", "仓鼠 | Hamster", "鸟类 | Bird", "爬宠 | Exotic"],
       examples: ["频繁嚎叫 Howling", "过度舔毛 Licking", "食欲减退 Anorexia"]
@@ -115,13 +115,13 @@ export const translations = {
       prompt: "PRIVATE-SYS >",
       help: "指令: analyze, status, about, clear",
       statusMsg: "模块: 正常 | 灵感库: 充盈 | 环境: 沉静",
-      aboutMsg: "它香 (Pet Aroma) - 跨物种情感连接实验笔记。",
+      aboutMsg: "它香 (Pet Aroma) - 跨物种情感连接心情日记。",
       unknown: "未知指令。"
     },
     homeQr: {
       title: "在小红书遇见我",
       titleEn: "Private Connection",
-      desc: "点击或扫码，关注我的日常感官日记与生活。"
+      desc: "关注我的日常感官日记与生活。"
     },
     footer: {
       desc: "自然的呼吸，无需言语的理解。",
@@ -134,7 +134,7 @@ export const translations = {
         s1: "日记 Whitepaper",
         s2: "联络 Contact"
       },
-      copy: "© 2024 它香 | 个人宠物感官研究日记",
+      copy: "© 2024 它香 | 个人宠物感官心情日记",
       icp: "浙ICP备2026002171号-1"
     }
   },
