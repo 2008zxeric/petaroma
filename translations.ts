@@ -5,7 +5,6 @@ export const translations = {
     brandName: "它香",
     brandSub: "Pet Aroma",
     brandDesc: "宠物芳香生活",
-    brandDesc: "宠物 芳香生活",
     slogan: "因为爱，所以“它香”。",
     sloganEn: "LOVE, SCENTED NATURALLY.",
     nav: {
