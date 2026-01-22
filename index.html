@@ -41,7 +41,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* 极境高级动效库 - 针对开屏与转场优化 */
+        /* 极境高级动效库 */
         @keyframes luxuryReveal {
           0% { clip-path: inset(50% 0 50% 0); filter: blur(30px); opacity: 0; transform: scale(1.1); }
           100% { clip-path: inset(0 0 0 0); filter: blur(0); opacity: 1; transform: scale(1); }
@@ -72,9 +72,7 @@
 
         .animate-breath { animation: breathing 4s ease-in-out infinite; }
 
-        .text-readable-shadow { text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.05); border-radius: 10px; }
     </style>
 <script type="importmap">
