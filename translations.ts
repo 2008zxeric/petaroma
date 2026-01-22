@@ -1,5 +1,5 @@
 
-// Definitive brand and translation map for "It Scent" (pet aroma LAB)
+// Definitive brand and translation map for "It Scent" (pet aroma)
 export const translations = {
   zh: {
     brandName: "它香",
