@@ -24,7 +24,7 @@ const AIConsultant: React.FC = () => {
       const result = await getPetScentAdvice(corePetType, behavior, 'zh');
       setAdvice(result);
     } catch (error: any) { 
-      console.error("Diagnosis Error:", error);
+      console.error("Reasoning Error:", error);
       const errorString = error?.message || String(error);
       
       if (
@@ -49,11 +49,11 @@ const AIConsultant: React.FC = () => {
           <div className="text-center mb-8 md:mb-16">
             <div className="inline-flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
-              <span className="text-brand-green text-[9px] md:text-[11px] uppercase tracking-[0.5em] font-bold italic">Deep Reasoning Advisor</span>
+              <span className="text-brand-green text-[9px] md:text-[11px] uppercase tracking-[0.5em] font-bold italic">Logic Reasoning Notes</span>
             </div>
             <h2 className="text-2xl md:text-5xl font-bold text-ink font-serif-brand mb-3">{t.title}</h2>
             <p className="text-ink/40 text-[10px] md:text-base font-medium italic tracking-tight">{t.desc}</p>
-            {/* 新增免责声明 */}
+            {/* 免责声明提示语 */}
             <p className="text-ink/30 text-[9px] md:text-[11px] mt-4 max-w-lg mx-auto leading-relaxed italic border-t border-brand-green/5 pt-4">
               {t.disclaimer}
             </p>
@@ -81,7 +81,7 @@ const AIConsultant: React.FC = () => {
             <textarea 
               value={behavior}
               onChange={(e) => setBehavior(e.target.value)}
-              placeholder="请用中文描述宠物的异常行为..."
+              placeholder="请描述观察到的行为细节..."
               className="w-full bg-white border border-brand-green/5 rounded-[1.5rem] md:rounded-[3rem] py-6 md:py-10 px-6 md:px-12 text-xs md:text-base font-medium min-h-[160px] resize-none outline-none focus:ring-2 focus:ring-brand-green/10 transition-all"
             />
 
@@ -96,7 +96,7 @@ const AIConsultant: React.FC = () => {
                 <div className="flex items-center justify-center gap-3">
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                  <span className="animate-pulse">正在进行深度逻辑推理...</span>
+                  <span className="animate-pulse">正在进行逻辑推演...</span>
                 </div>
               ) : t.btnSubmit}
             </button>
@@ -111,7 +111,7 @@ const AIConsultant: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-xl md:text-3xl text-ink font-serif-brand font-bold">{t.resultTitle}</h3>
-                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Clinical Reasoning Report</p>
+                    <p className="text-[8px] md:text-[10px] text-ink/30 uppercase tracking-[0.3em] font-bold">Personal Logic Report</p>
                   </div>
                 </div>
               </div>
@@ -119,7 +119,7 @@ const AIConsultant: React.FC = () => {
               <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-8">
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为逻辑推理</span>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">行为逻辑推演</span>
                     <p className="text-ink/60 text-[11px] md:text-sm leading-relaxed mt-2 italic border-l-2 border-brand-green/10 pl-4">{advice.analysis}</p>
                   </div>
                   <div>
@@ -129,7 +129,7 @@ const AIConsultant: React.FC = () => {
                 </div>
                 <div className="bg-canvas/50 p-6 md:p-10 rounded-[2rem] border border-brand-green/5 space-y-6">
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">推荐方案</span>
+                    <span className="text-[9px] uppercase tracking-widest text-brand-green font-bold">建议方案</span>
                     <h4 className="text-xl md:text-2xl font-serif-brand font-bold text-brand-green mt-1">{advice.productRecommendation}</h4>
                   </div>
                   <div>
