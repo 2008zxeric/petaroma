@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>它香 宠物芳香生活</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-green': '#2E8B57',
+              'leaf-green': '#87CB42',
+              'cream': '#F5F1E8',
+              'canvas': '#FAFAFA',
+              'ink': '#1B241B',
+              'mint': '#A8E6A2',
+              'oatmeal': '#FDFBF7',
+              'sage': '#829682',
+            },
+            fontFamily: {
+              'personal': ['"Zhi Mang Xing"', 'cursive'],
+              'hand': ['"Caveat"', 'cursive'],
+              'serif-brand': ['"Noto Serif SC"', 'serif'],
+              'display': ['"Playfair Display"', 'serif'],
+            },
+            animation: {
+              'fade-in': 'fade-in 0.8s ease-out forwards',
+              'fade-in-up': 'fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'breathe': 'breathe 10s ease-in-out infinite',
+            },
+            keyframes: {
+              'fade-in': { 'from': { opacity: '0' }, 'to': { opacity: '1' } },
+              'fade-in-up': { 'from': { opacity: '0', transform: 'translateY(20px)' }, 'to': { opacity: '1', transform: 'translateY(0)' } },
+              'breathe': { '0%, 100%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.03)' } }
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Noto+Serif+SC:wght@200;400;700&family=Noto+Sans+SC:wght@200;400;700&family=Playfair+Display:italic,wght@400;700&family=Zhi+Mang+Xing&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Noto Sans SC', sans-serif;
+        background-color: #FDFBF7;
+        background-image: radial-gradient(#1B241B05 1px, transparent 0);
+        background-size: 30px 30px;
+        color: #1B241B;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      .font-personal { font-family: 'Zhi Mang Xing', cursive; }
+      .font-hand { font-family: 'Caveat', cursive; }
+      .glass-nav {
+        background: rgba(253, 251, 247, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .underline-sketch {
+        background-image: linear-gradient(120deg, #A8E6A2 0%, #A8E6A2 100%);
+        background-repeat: no-repeat;
+        background-size: 100% 0.2em;
+        background-position: 0 88%;
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-thumb { background: #2E8B57; border-radius: 10px; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@google/generative-ai": "https://esm.sh/@google/generative-ai@^0.1.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
