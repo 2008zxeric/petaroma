@@ -12,7 +12,7 @@ export const translations = {
       series: "气味方案 Scent Map",
       lab: "影像记录 Visuals",
       consultant: "逻辑推演 Advisor",
-      console: "终端 Console"
+
     },
     hero: {
       badge: "主理人亲选 · 自然纯萃原料 BOTANICAL SELECT",
@@ -109,15 +109,7 @@ export const translations = {
       petTypes: ["猫咪 | Cat", "狗狗 | Dog", "兔子 | Rabbit", "仓鼠 | Hamster", "鸟类 | Bird", "爬宠 | Exotic"],
       examples: ["频繁嚎叫 Howling", "过度舔毛 Licking", "食欲减退 Anorexia"]
     },
-    console: {
-      welcome: "IT SCENT / 个人芳香操作系统 [1.0.4]",
-      ready: "已就绪。输入 'help' 获取指令。",
-      prompt: "PRIVATE-SYS >",
-      help: "指令: analyze, status, about, clear",
-      statusMsg: "模块: 正常 | 灵感库: 充盈 | 环境: 沉静",
-      aboutMsg: "它香 (Pet Aroma) - 跨物种情感连接心情日记。",
-      unknown: "未知指令。"
-    },
+
     homeQr: {
       title: "在小红书遇见我",
       titleEn: "Private Connection",
@@ -149,7 +141,7 @@ export const translations = {
       series: "Scent Map",
       lab: "Visuals",
       consultant: "Advisor",
-      console: "Console"
+
     },
     hero: {
       badge: "HAND-PICKED · BOTANICAL SELECT",
@@ -184,7 +176,7 @@ export const translations = {
     safety: { title: "Not Just Scent, A Promise", titleEn: "A Promise", desc: "Rigorous testing in my studio.", metrics: [{ title: "Non-Toxic", icon: "🧪" }, { title: "Vet-Audited", icon: "📋" }, { title: "IFRA Standards", icon: "🌍" }, { title: "Transparent", icon: "🛡️" }] },
     lab: { tag: "VISUAL MEMORY", title: "Mood Journal", titleEn: "Mood Journal", upload: "Upload", placeholder: "Vibe...", btnCreate: "Journal", loading: "Extracting..." },
     consultant: { tag: "LOGIC ENGINE", title: "Thinking Notes", titleEn: "Thinking Notes", desc: "Using logic reasoning.", disclaimer: "For reference only.", btnSubmit: "Reason", loading: "Reasoning...", resultTitle: "Report", resultSub: "Thinking Report", petTypes: ["Cat", "Dog", "Rabbit", "Hamster", "Bird", "Exotic"], examples: ["Howling", "Licking", "Anorexia"] },
-    console: { welcome: "IT SCENT Console", ready: "Ready.", prompt: "PSL>", help: "analyze, status, about", statusMsg: "Core: OK", aboutMsg: "Pet Aroma Diary.", unknown: "Unknown." },
+
     homeQr: { title: "Connecting Life", titleEn: "Interspecies", desc: "Follow us." },
     footer: { desc: "Breath of nature.", socials: ["Instagram", "WeChat", "RED"], links: { explore: "Explore", service: "Service", p1: "Philosophy", p2: "Scent", s1: "Diary", s2: "Contact" }, copy: "© 2024 It Scent | Private Journal", icp: "浙ICP备2026002171号-1" }
   }

@@ -9,7 +9,6 @@ import SafetyStandard from './components/SafetyStandard'
 import AIConsultant from './components/AIConsultant'
 import ImageLab from './components/ImageLab'
 import HomeQR from './components/HomeQR'
-import ScentConsole from './components/ScentConsole'
 import Footer from './components/Footer'
 import Shop from './src/pages/Shop'
 import Cart from './src/pages/Cart'
@@ -180,7 +179,6 @@ function GlobalNav() {
 
 // 首页组件
 function HomePage() {
-  const [consoleOpen, setConsoleOpen] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -190,7 +188,7 @@ function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFBF7]">
       {/* 原有的首页 Header 保留用于首页内部导航 */}
-      <Header onOpenConsole={() => setConsoleOpen(true)} />
+      <Header />
       
       <main className="flex-grow">
         {!selectedProductId ? (
@@ -214,10 +212,6 @@ function HomePage() {
       </main>
       
       <Footer />
-
-      {consoleOpen && (
-        <ScentConsole lang="zh" onClose={() => setConsoleOpen(false)} />
-      )}
     </div>
   )
 }

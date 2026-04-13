@@ -4,9 +4,7 @@ import { translations } from '../translations'
 import Logo from './Logo'
 import { useCartStore } from '../src/store/cartStore'
 
-interface Props { onOpenConsole: () => void; }
-
-const Header: React.FC<Props> = ({ onOpenConsole }) => {
+const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null)
@@ -137,10 +135,6 @@ const Header: React.FC<Props> = ({ onOpenConsole }) => {
             <div className="flex items-center gap-6">
               <GlobalNavLinks />
             </div>
-            {/* 控制台按钮 */}
-            <button onClick={onOpenConsole} className="w-10 h-10 flex items-center justify-center bg-brand-green/5 text-brand-green rounded-full hover:bg-brand-green hover:text-white transition-all">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" strokeWidth="2"/></svg>
-            </button>
             {/* 购物车 */}
             <Link to="/cart" className="relative w-10 h-10 flex items-center justify-center bg-brand-green/5 text-brand-green rounded-full hover:bg-brand-green hover:text-white transition-all">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
